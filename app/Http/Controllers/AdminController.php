@@ -166,4 +166,93 @@ class AdminController extends Controller
         $order->load('orderItems.product', 'user');
         return view('admin.orders.modern-show', compact('order'));
     }
+
+    /**
+     * Display income breakdown by weeks in specified month.
+     */
+    public function incomeWeekly(Request $request)
+    {
+        $month = $request->get('month', now()->month);
+        $year = $request->get('year', now()->year);
+
+        $weeklyData = [];
+        $startOfMonth = Carbon::create($year, $month, 1)->startOfWeek();
+        $endOfMonth = Carbon::create($year, $month)->endOfMonth()->endOfWeek();
+
+        $currentWeek = $startOfMonth->copy();
+
+        while ($currentWeek->lte($endOfMonth)) {
+            $weekStart = $currentWeek->copy();
+            $weekEnd = $currentWeek->copy()->endOfWeek();
+
+            $income = Order::where('paid', true)
+                ->whereBetween('created_at', [$weekStart, $weekEnd])
+                ->sum('total_amount');
+
+            $weeklyData[] = [
+                'week' => 'Week ' . $weekStart->weekOfMonth,
+                'start_date' => $weekStart->format('d M'),
+                'end_date' => $weekEnd->format('d M'),
+                'income' => $income,
+                'formatted_income' => 'Rp ' . number_format($income, 0, ',', '.'),
+            ];
+
+            $currentWeek->addWeek();
+        }
+
+        $totalMonth = array_sum(array_column($weeklyData, 'income'));
+
+        return view('admin.income.weekly', compact('weeklyData', 'totalMonth', 'month', 'year'));
+    }
+
+    /**
+     * Display income breakdown by months in specified year.
+     */
+    public function incomeMonthly(Request $request)
+    {
+        $year = $request->get('year', now()->year);
+
+        $monthlyData = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $income = Order::where('paid', true)
+                ->whereMonth('created_at', $month)
+                ->whereYear('created_at', $year)
+                ->sum('total_amount');
+
+            $monthlyData[] = [
+                'month' => Carbon::create($year, $month)->format('F'),
+                'month_number' => $month,
+                'income' => $income,
+                'formatted_income' => 'Rp ' . number_format($income, 0, ',', '.'),
+            ];
+        }
+
+        $totalYear = array_sum(array_column($monthlyData, 'income'));
+
+        return view('admin.income.monthly', compact('monthlyData', 'totalYear', 'year'));
+    }
+
+    /**
+     * Display income breakdown by years.
+     */
+    public function incomeYearly()
+    {
+        $currentYear = now()->year;
+        $startYear = $currentYear - 4; // Show last 5 years
+
+        $yearlyData = [];
+        for ($year = $startYear; $year <= $currentYear; $year++) {
+            $income = Order::where('paid', true)
+                ->whereYear('created_at', $year)
+                ->sum('total_amount');
+
+            $yearlyData[] = [
+                'year' => $year,
+                'income' => $income,
+                'formatted_income' => 'Rp ' . number_format($income, 0, ',', '.'),
+            ];
+        }
+
+        return view('admin.income.yearly', compact('yearlyData'));
+    }
 }

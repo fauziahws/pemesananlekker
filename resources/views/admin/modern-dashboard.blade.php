@@ -41,26 +41,44 @@
 
         <!-- 🔥 Income Summary (TAMBAHAN) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
-                <p class="text-sm font-medium text-gray-600 mb-1">Penghasilan Minggu Ini</p>
+            <a href="{{ route('admin.income.weekly') }}" class="bg-white rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm font-medium text-gray-600">Penghasilan Minggu Ini</p>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
                 <p class="text-3xl font-bold text-green-600">
                     Rp {{ number_format($incomeWeek, 0, ',', '.') }}
                 </p>
-            </div>
+                <p class="text-xs text-gray-500 mt-2">Click to see weekly breakdown</p>
+            </a>
 
-            <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
-                <p class="text-sm font-medium text-gray-600 mb-1">Penghasilan Bulan Ini</p>
+            <a href="{{ route('admin.income.monthly') }}" class="bg-white rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm font-medium text-gray-600">Penghasilan Bulan Ini</p>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
                 <p class="text-3xl font-bold text-blue-600">
                     Rp {{ number_format($incomeMonth, 0, ',', '.') }}
                 </p>
-            </div>
+                <p class="text-xs text-gray-500 mt-2">Click to see monthly breakdown</p>
+            </a>
 
-            <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
-                <p class="text-sm font-medium text-gray-600 mb-1">Penghasilan Tahun Ini</p>
+            <a href="{{ route('admin.income.yearly') }}" class="bg-white rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm font-medium text-gray-600">Penghasilan Tahun Ini</p>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
                 <p class="text-3xl font-bold text-amber-600">
                     Rp {{ number_format($incomeYear, 0, ',', '.') }}
                 </p>
-            </div>
+                <p class="text-xs text-gray-500 mt-2">Click to see yearly breakdown</p>
+            </a>
         </div>
 
         <!-- Quick Actions -->

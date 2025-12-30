@@ -84,4 +84,9 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('admin')->name('admin.')-
     // Orders
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders.index');
     Route::get('/orders/{order}', [AdminController::class, 'showOrder'])->name('orders.show');
+    
+    // Income Reports
+    Route::get('/income/weekly', [AdminController::class, 'incomeWeekly'])->name('income.weekly');
+    Route::get('/income/monthly', [AdminController::class, 'incomeMonthly'])->name('income.monthly');
+    Route::get('/income/yearly', [AdminController::class, 'incomeYearly'])->name('income.yearly');
 });
